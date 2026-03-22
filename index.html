@@ -828,27 +828,18 @@
     }
   }
 
-  // ─── DEMO DATA GENERATOR ──────────────────────────────────
-  function generateDemoResult(roll, sem) {
-    const subjects = [
-      { name: 'Mathematics - III', code: 'KAS301', marks: 72, grade: 'B+' },
-      { name: 'Data Structures', code: 'KCS301', marks: 85, grade: 'O' },
-      { name: 'Computer Organization', code: 'KCS302', marks: 68, grade: 'B' },
-      { name: 'Object Oriented Programming', code: 'KCS303', marks: 91, grade: 'O' },
-      { name: 'Discrete Mathematics', code: 'KCS304', marks: 74, grade: 'B+' },
-      { name: 'Software Engineering', code: 'KCS401', marks: 78, grade: 'A' },
-    ];
-    return {
-      name: 'DEMO STUDENT (Backend Pending)',
-      rollNo: roll,
-      course: 'B.Tech — Computer Science Engineering',
-      semester: `Semester ${sem}`,
-      college: 'Demo College of Engineering, Lucknow',
-      sgpa: '8.42',
-      cgpa: '7.95',
-      status: 'PASS',
-      subjects
-    };
+  // ─── SERVER DOWN MESSAGE ─────────────────────────────────
+  function showServerDown() {
+    const errorBox = document.getElementById('errorBox');
+    document.getElementById('errorMsg').innerHTML = `
+      🔴 <strong>AKTU Server is currently down!</strong><br>
+      <span style="font-size:13px;opacity:0.8">The official AKTU website is not responding right now.<br>
+      Please try again after some time. AKTU servers usually recover within 1-2 hours.</span>
+    `;
+    errorBox.classList.add('visible');
+    errorBox.style.flexDirection = 'column';
+    errorBox.style.alignItems = 'flex-start';
+    grecaptcha.reset();
   }
 
   // ─── SHOW RESULT ─────────────────────────────────────────
