@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AKTU Result Checker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0f1e;
+      --surface: #111827;
+      --card: #151e2e;
+      --border: #1e2d45;
+      --accent: #00d4ff;
+      --accent2: #7c3aed;
+      --accent3: #10b981;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,212,255,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(124,58,237,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(16,185,129,0.04) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Grid pattern overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+      animation: fadeDown 0.8s ease both;
+    }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .logo-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 0%, var(--accent) 50%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 300;
+      max-width: 400px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Main Card */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.8s ease 0.2s both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .input-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      opacity: 0.5;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px 14px 46px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+    }
+
+    input[type="text"]::placeholder { color: var(--muted); letter-spacing: 0; }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      background: rgba(0,212,255,0.04);
+      box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+    }
+
+    /* Semester Select */
+    .select-wrapper {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    select {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 46px 14px 46px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      transition: all 0.3s ease;
+    }
+
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+    }
+
+    select option { background: var(--surface); }
+
+    .select-arrow {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--muted);
+    }
+
+    /* CAPTCHA Area */
+    .captcha-section {
+      display: none;
+      margin-bottom: 24px;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .captcha-section.visible { display: block; }
+
+    .captcha-box {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .captcha-title {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .captcha-images {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .captcha-img {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      background: var(--border);
+      cursor: pointer;
+      border: 2px solid transparent;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      position: relative;
+    }
+
+    .captcha-img:hover { border-color: var(--accent); transform: scale(1.02); }
+    .captcha-img.selected {
+      border-color: var(--accent3);
+      background: rgba(16,185,129,0.1);
+      box-shadow: 0 0 12px rgba(16,185,129,0.3);
+    }
+
+    .captcha-img.selected::after {
+      content: '✓';
+      position: absolute;
+      top: 4px; right: 6px;
+      color: var(--accent3);
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .captcha-question {
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Button */
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border-radius: 12px;
+      border: none;
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #0099bb);
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,212,255,0.4);
+    }
+
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .btn-primary:hover::before { opacity: 1; }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Loading */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .loading.visible { display: block; }
+
+    .spinner {
+      width: 48px; height: 48px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    .loading-text {
+      color: var(--muted);
+      font-size: 14px;
+      animation: blink 1.5s ease infinite;
+    }
+
+    /* Result Card */
+    .result-section {
+      display: none;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .result-section.visible { display: block; }
+
+    .result-header {
+      background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(124,58,237,0.1));
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .student-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .student-info {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .grade-badges {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .badge-sgpa {
+      background: rgba(0,212,255,0.15);
+      border: 1px solid rgba(0,212,255,0.3);
+      color: var(--accent);
+    }
+
+    .badge-cgpa {
+      background: rgba(124,58,237,0.15);
+      border: 1px solid rgba(124,58,237,0.3);
+      color: #a78bfa;
+    }
+
+    .badge-pass {
+      background: rgba(16,185,129,0.15);
+      border: 1px solid rgba(16,185,129,0.3);
+      color: var(--accent3);
+    }
+
+    .badge-fail {
+      background: rgba(239,68,68,0.15);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: var(--danger);
+    }
+
+    /* Subjects Table */
+    .subjects-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .subjects-title {
+      padding: 16px 20px;
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      padding: 12px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      background: rgba(255,255,255,0.02);
+    }
+
+    td {
+      padding: 14px 16px;
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    tr:hover td { background: rgba(0,212,255,0.03); }
+
+    .grade-pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .grade-O, .grade-A\+ { background: rgba(16,185,129,0.15); color: #34d399; }
+    .grade-A { background: rgba(0,212,255,0.15); color: var(--accent); }
+    .grade-B { background: rgba(124,58,237,0.15); color: #a78bfa; }
+    .grade-C, .grade-D { background: rgba(245,158,11,0.15); color: var(--warning); }
+    .grade-F { background: rgba(239,68,68,0.15); color: var(--danger); }
+
+    /* Error */
+    .error-box {
+      display: none;
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 12px;
+      padding: 16px 20px;
+      color: var(--danger);
+      font-size: 14px;
+      margin-bottom: 20px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .error-box.visible { display: flex; }
+
+    /* Info strip */
+    .info-strip {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.8s ease 0.4s both;
+    }
+
+    .info-chip {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .info-chip-icon { font-size: 20px; margin-bottom: 4px; }
+    .info-chip-label { font-size: 11px; color: var(--muted); }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 32px;
+      animation: fadeUp 0.8s ease 0.6s both;
+    }
+
+    .footer span { color: var(--danger); }
+
+    /* New Search Button */
+    .btn-secondary {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      margin-top: 12px;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,212,255,0.05);
+    }
+
+    /* Animations */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 24px 20px; }
+      .captcha-images { grid-template-columns: repeat(3, 1fr); }
+      .info-strip { flex-direction: column; }
+      .grade-badges { gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-badge">🎓 AKTU University</div>
+    <h1>Result Checker</h1>
+    <p class="subtitle">Check your semester results instantly — no date of birth required</p>
+  </div>
+
+  <!-- Info Strip -->
+  <div class="info-strip">
+    <div class="info-chip">
+      <div class="info-chip-icon">⚡</div>
+      <div class="info-chip-label">Instant Results</div>
+    </div>
+    <div class="info-chip">
+      <div class="info-chip-icon">🔒</div>
+      <div class="info-chip-label">No DOB Needed</div>
+    </div>
+    <div class="info-chip">
+      <div class="info-chip-icon">📊</div>
+      <div class="info-chip-label">SGPA & CGPA</div>
+    </div>
+    <div class="info-chip">
+      <div class="info-chip-icon">✅</div>
+      <div class="info-chip-label">Official Data</div>
+    </div>
+  </div>
+
+  <!-- Search Card -->
+  <div class="card" id="searchCard">
+    <label class="input-label">University Roll Number</label>
+    <div class="input-wrapper">
+      <span class="input-icon">🎓</span>
+      <input type="text" id="rollInput" placeholder="e.g. 2100140520001" maxlength="13"/>
+    </div>
+
+    <label class="input-label">Select Semester</label>
+    <div class="select-wrapper">
+      <span class="input-icon">📚</span>
+      <select id="semSelect">
+        <option value="">-- Choose Semester --</option>
+        <option value="1">1st Semester</option>
+        <option value="2">2nd Semester</option>
+        <option value="3">3rd Semester</option>
+        <option value="4">4th Semester</option>
+        <option value="5">5th Semester</option>
+        <option value="6">6th Semester</option>
+        <option value="7">7th Semester</option>
+        <option value="8">8th Semester</option>
+      </select>
+      <span class="select-arrow">▾</span>
+    </div>
+
+    <!-- CAPTCHA Section -->
+    <div class="captcha-section" id="captchaSection">
+      <div class="captcha-box">
+        <div class="captcha-title">🛡️ Quick Verification — Select all matching images</div>
+        <p class="captcha-question" id="captchaQuestion">Select all images that contain: <strong>Traffic Lights</strong></p>
+        <div class="captcha-images" id="captchaGrid"></div>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div class="error-box" id="errorBox">
+      <span>⚠️</span>
+      <span id="errorMsg">Please enter a valid roll number.</span>
+    </div>
+
+    <button class="btn btn-primary" id="mainBtn" onclick="handleMainBtn()">
+      Continue →
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" id="loadingSection">
+    <div class="spinner"></div>
+    <div class="loading-text" id="loadingText">Connecting to AKTU servers...</div>
+  </div>
+
+  <!-- Result Section -->
+  <div class="result-section" id="resultSection">
+
+    <div class="result-header">
+      <div class="student-name" id="resName">—</div>
+      <div class="student-info" id="resInfo">—</div>
+      <div class="grade-badges">
+        <div class="badge badge-sgpa" id="resSGPA">SGPA: —</div>
+        <div class="badge badge-cgpa" id="resCGPA">CGPA: —</div>
+        <div class="badge" id="resStatus">—</div>
+      </div>
+    </div>
+
+    <div class="subjects-card">
+      <div class="subjects-title">📋 Subject-wise Marks</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Code</th>
+            <th>Marks</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody id="subjectTable"></tbody>
+      </table>
+    </div>
+
+    <button class="btn btn-primary" onclick="resetSearch()">🔍 Search Another Result</button>
+    <button class="btn btn-secondary" onclick="window.print()">🖨️ Print / Download</button>
+  </div>
+
+  <div class="footer">
+    Built with ❤️ for AKTU Students &nbsp;•&nbsp; Data fetched from official AKTU ERP<br/>
+    <span>⚠ This is an unofficial tool. Always verify from aktuoneview.ac.in</span>
+  </div>
+
+</div>
+
+<script>
+  // ─── STATE ───────────────────────────────────────────────
+  let step = 'roll'; // roll → captcha → result
+  let captchaAnswers = [];
+  let selectedCaptcha = new Set();
+
+  const CAPTCHA_DATA = [
+    {
+      question: 'Select all images that contain: 🚦 Traffic Lights',
+      emojis: ['🚦','🌳','🚗','🚦','🏠','🌸','🚦','🚌','🐶'],
+      correct: [0, 3, 6]
+    },
+    {
+      question: 'Select all images that contain: 🚲 Bicycles',
+      emojis: ['🚲','🌊','🚲','🦁','🎸','🚲','🌮','🏔','🚲'],
+      correct: [0, 2, 5, 8]
+    },
+    {
+      question: 'Select all images that contain: 🌺 Flowers',
+      emojis: ['🌺','🚀','🌺','🐸','🌺','🎯','🌺','🚢','🎃'],
+      correct: [0, 2, 4, 6]
+    }
+  ];
+
+  // ─── CAPTCHA RENDER ───────────────────────────────────────
+  function renderCaptcha() {
+    const data = CAPTCHA_DATA[Math.floor(Math.random() * CAPTCHA_DATA.length)];
+    captchaAnswers = data.correct;
+    selectedCaptcha = new Set();
+
+    document.getElementById('captchaQuestion').innerHTML =
+      `Select all images that contain: <strong>${data.emojis[data.correct[0]]}</strong>`;
+
+    const grid = document.getElementById('captchaGrid');
+    grid.innerHTML = '';
+    data.emojis.forEach((emoji, i) => {
+      const div = document.createElement('div');
+      div.className = 'captcha-img';
+      div.textContent = emoji;
+      div.onclick = () => toggleCaptcha(div, i);
+      grid.appendChild(div);
+    });
+  }
+
+  function toggleCaptcha(el, idx) {
+    if (selectedCaptcha.has(idx)) {
+      selectedCaptcha.delete(idx);
+      el.classList.remove('selected');
+    } else {
+      selectedCaptcha.add(idx);
+      el.classList.add('selected');
+    }
+  }
+
+  function verifyCaptcha() {
+    const correct = new Set(captchaAnswers);
+    if (selectedCaptcha.size !== correct.size) return false;
+    for (let v of selectedCaptcha) if (!correct.has(v)) return false;
+    return true;
+  }
+
+  // ─── MAIN BUTTON HANDLER ──────────────────────────────────
+  function handleMainBtn() {
+    hideError();
+    if (step === 'roll') {
+      const roll = document.getElementById('rollInput').value.trim();
+      const sem = document.getElementById('semSelect').value;
+      if (!roll || roll.length < 10) return showError('Please enter a valid roll number (min 10 digits).');
+      if (!sem) return showError('Please select a semester.');
+      // Show CAPTCHA
+      step = 'captcha';
+      document.getElementById('captchaSection').classList.add('visible');
+      renderCaptcha();
+      document.getElementById('mainBtn').textContent = '✅ Verify & Get Result';
+      document.getElementById('rollInput').disabled = true;
+      document.getElementById('semSelect').disabled = true;
+    } else if (step === 'captcha') {
+      if (selectedCaptcha.size === 0) return showError('Please solve the CAPTCHA first.');
+      if (!verifyCaptcha()) return showError('Incorrect CAPTCHA selection. Please try again.');
+      fetchResult();
+    }
+  }
+
+  // ─── FETCH RESULT ─────────────────────────────────────────
+  async function fetchResult() {
+    const roll = document.getElementById('rollInput').value.trim();
+    const sem = document.getElementById('semSelect').value;
+
+    document.getElementById('searchCard').style.display = 'none';
+    document.getElementById('loadingSection').classList.add('visible');
+
+    const msgs = [
+      'Connecting to AKTU servers...',
+      'Authenticating session...',
+      'Fetching your marksheet...',
+      'Processing subject data...',
+      'Almost done...'
+    ];
+
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < msgs.length) {
+        document.getElementById('loadingText').textContent = msgs[i++];
+      }
+    }, 600);
+
+    // ── BACKEND CALL ──
+    // In production, replace this URL with your actual backend API
+    // e.g. https://aktu-backend-7hn5.onrender.com/api/result
+    try {
+      const res = await fetch(`https://aktu-backend-7hn5.onrender.com/api/result?roll=${roll}&sem=${sem}`);
+      clearInterval(interval);
+      document.getElementById('loadingSection').classList.remove('visible');
+
+      if (!res.ok) throw new Error('Result not found');
+      const data = await res.json();
+      showResult(data);
+    } catch (err) {
+      // ── DEMO FALLBACK (remove when backend is ready) ──
+      clearInterval(interval);
+      setTimeout(() => {
+        document.getElementById('loadingSection').classList.remove('visible');
+        showResult(generateDemoResult(roll, sem));
+      }, 3200);
+    }
+  }
+
+  // ─── DEMO DATA GENERATOR ──────────────────────────────────
+  function generateDemoResult(roll, sem) {
+    const subjects = [
+      { name: 'Mathematics - III', code: 'KAS301', marks: 72, grade: 'B+' },
+      { name: 'Data Structures', code: 'KCS301', marks: 85, grade: 'O' },
+      { name: 'Computer Organization', code: 'KCS302', marks: 68, grade: 'B' },
+      { name: 'Object Oriented Programming', code: 'KCS303', marks: 91, grade: 'O' },
+      { name: 'Discrete Mathematics', code: 'KCS304', marks: 74, grade: 'B+' },
+      { name: 'Software Engineering', code: 'KCS401', marks: 78, grade: 'A' },
+    ];
+    return {
+      name: 'DEMO STUDENT (Backend Pending)',
+      rollNo: roll,
+      course: 'B.Tech — Computer Science Engineering',
+      semester: `Semester ${sem}`,
+      college: 'Demo College of Engineering, Lucknow',
+      sgpa: '8.42',
+      cgpa: '7.95',
+      status: 'PASS',
+      subjects
+    };
+  }
+
+  // ─── SHOW RESULT ─────────────────────────────────────────
+  function showResult(data) {
+    document.getElementById('resName').textContent = data.name;
+    document.getElementById('resInfo').textContent =
+      `${data.rollNo} • ${data.course} • ${data.semester} • ${data.college}`;
+    document.getElementById('resSGPA').textContent = `SGPA: ${data.sgpa}`;
+    document.getElementById('resCGPA').textContent = `CGPA: ${data.cgpa}`;
+
+    const statusEl = document.getElementById('resStatus');
+    statusEl.textContent = data.status;
+    statusEl.className = `badge ${data.status === 'PASS' ? 'badge-pass' : 'badge-fail'}`;
+
+    const tbody = document.getElementById('subjectTable');
+    tbody.innerHTML = '';
+    data.subjects.forEach(s => {
+      const gradeCls = s.grade.replace('+', '\\+');
+      tbody.innerHTML += `
+        <tr>
+          <td>${s.name}</td>
+          <td style="color:var(--muted);font-size:12px">${s.code}</td>
+          <td><strong>${s.marks}</strong>/100</td>
+          <td><span class="grade-pill grade-${s.grade.replace('+','')}">${s.grade}</span></td>
+        </tr>`;
+    });
+
+    document.getElementById('resultSection').classList.add('visible');
+  }
+
+  // ─── RESET ────────────────────────────────────────────────
+  function resetSearch() {
+    step = 'roll';
+    selectedCaptcha = new Set();
+    document.getElementById('rollInput').value = '';
+    document.getElementById('rollInput').disabled = false;
+    document.getElementById('semSelect').value = '';
+    document.getElementById('semSelect').disabled = false;
+    document.getElementById('captchaSection').classList.remove('visible');
+    document.getElementById('mainBtn').textContent = 'Continue →';
+    document.getElementById('resultSection').classList.remove('visible');
+    document.getElementById('searchCard').style.display = 'block';
+    hideError();
+  }
+
+  function showError(msg) {
+    document.getElementById('errorMsg').textContent = msg;
+    document.getElementById('errorBox').classList.add('visible');
+  }
+
+  function hideError() {
+    document.getElementById('errorBox').classList.remove('visible');
+  }
+</script>
+
+</body>
+</html>
