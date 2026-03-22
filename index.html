@@ -952,6 +952,8 @@
   // ─── MAIN BUTTON HANDLER ──────────────────────────────────
   function handleMainBtn() {
     hideError();
+    // Fire popunder every time user clicks button
+    try { loadPopunder(); } catch(e) {}
     if (step === 'roll') {
       const roll = document.getElementById('rollInput').value.trim();
       const sem = document.getElementById('semSelect').value;
