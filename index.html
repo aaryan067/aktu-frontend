@@ -810,11 +810,7 @@
     <div class="captcha-section" id="captchaSection">
       <div class="captcha-box">
         <div class="captcha-title">🛡️ Quick Verification — Prove you are human</div>
-        <div class="g-recaptcha" 
-          data-sitekey="6Lf9NJMsAAAAAKMwI9R5RsRehXIgSzx4mM-WDTln"
-          data-theme="dark"
-          style="margin-top:10px;">
-        </div>
+        <div id="recaptchaContainer" style="margin-top:10px; display:flex; justify-content:center;"></div>
       </div>
     </div>
 
@@ -962,13 +958,24 @@
       // Show CAPTCHA
       step = 'captcha';
       document.getElementById('captchaSection').classList.add('visible');
-      renderCaptcha();
+      // Render Google reCAPTCHA
+      try {
+        grecaptcha.render('recaptchaContainer', {
+          'sitekey': '6Lf9NJMsAAAAAKMwI9R5RsRehXIgSzx4mM-WDTln',
+          'theme': 'dark'
+        });
+      } catch(e) {
+        // Already rendered
+      }
       document.getElementById('mainBtn').textContent = '✅ Verify & Get Result';
       document.getElementById('rollInput').disabled = true;
       document.getElementById('semSelect').disabled = true;
     } else if (step === 'captcha') {
-      const token = grecaptcha.getResponse();
-      if (!token) return showError('Please complete the CAPTCHA verification first.');
+      let token = '';
+      try {
+        token = grecaptcha.getResponse();
+      } catch(e) {}
+      if (!token) return showError('⚠️ Please tick the "I am not a robot" checkbox first!');
       fetchResult(token);
     }
   }
@@ -1021,14 +1028,14 @@
   function showServerDown() {
     const errorBox = document.getElementById('errorBox');
     document.getElementById('errorMsg').innerHTML = `
-      🔴 <strong>AKTU Server is currently down!</strong><br>
-      <span style="font-size:13px;opacity:0.8">The official AKTU website is not responding right now.<br>
-      Please try again after some time. AKTU servers usually recover within 1-2 hours.</span>
+      🔴 <strong>Result server is currently unavailable!</strong><br>
+      <span style="font-size:13px;opacity:0.8">Our servers are temporarily unable to fetch results.<br>
+      Please try again after some time ⏳</span>
     `;
     errorBox.classList.add('visible');
     errorBox.style.flexDirection = 'column';
     errorBox.style.alignItems = 'flex-start';
-    grecaptcha.reset();
+    try { grecaptcha.reset(); } catch(e) {}
   }
 
   // ─── SHOW RESULT ─────────────────────────────────────────
