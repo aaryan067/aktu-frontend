@@ -1004,23 +1004,33 @@
     }, 600);
 
     // ── BACKEND CALL ──
-    // In production, replace this URL with your actual backend API
-    // e.g. https://aktu-backend-7hn5.onrender.com/api/result
     try {
       const res = await fetch(`https://aktu-backend-7hn5.onrender.com/api/result?roll=${roll}&sem=${sem}&captcha=${captchaToken}`);
       clearInterval(interval);
       document.getElementById('loadingSection').classList.remove('visible');
+      document.getElementById('searchCard').style.display = 'block';
 
-      if (!res.ok) throw new Error('Result not found');
       const data = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 404) {
+          showError('⚠️ Result not found. Please check your roll number and semester.');
+        } else if (res.status === 403) {
+          showError('⚠️ CAPTCHA verification failed. Please try again.');
+          try { grecaptcha.reset(); } catch(e) {}
+        } else {
+          showServerDown();
+        }
+        return;
+      }
+
       showResult(data);
+
     } catch (err) {
-      // ── DEMO FALLBACK (remove when backend is ready) ──
       clearInterval(interval);
-      setTimeout(() => {
-        document.getElementById('loadingSection').classList.remove('visible');
-        showResult(generateDemoResult(roll, sem));
-      }, 3200);
+      document.getElementById('loadingSection').classList.remove('visible');
+      document.getElementById('searchCard').style.display = 'block';
+      showServerDown();
     }
   }
 
