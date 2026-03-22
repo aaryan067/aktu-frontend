@@ -78,6 +78,85 @@
       overflow-x: hidden;
     }
 
+    /* ── AD STYLES ── */
+    .ad-container {
+      width: 100%;
+      margin: 16px 0;
+      text-align: center;
+      min-height: 90px;
+      background: transparent;
+    }
+
+    .ad-label {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    /* AdBlock Warning */
+    .adblock-warning {
+      display: none;
+      background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(239,68,68,0.1));
+      border: 1px solid rgba(245,158,11,0.3);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      text-align: center;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .adblock-warning.visible { display: block; }
+
+    .adblock-icon { font-size: 36px; margin-bottom: 10px; }
+
+    .adblock-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--warning);
+      margin-bottom: 8px;
+    }
+
+    .adblock-msg {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .adblock-steps {
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .adblock-steps li {
+      margin-bottom: 6px;
+      list-style: none;
+      padding-left: 4px;
+    }
+
+    .btn-adblock {
+      background: linear-gradient(135deg, var(--warning), #d97706);
+      color: #000;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-adblock:hover { opacity: 0.9; }
+
+    /* ── Animated background ── */
     /* Animated background */
     body::before {
       content: '';
@@ -624,6 +703,18 @@
     }
   </style>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <!-- ═══ ADSTERRA AD SCRIPTS ═══ -->
+
+  <!-- 1. Adsterra Social Bar - REAL CODE (goes before </body>) -->
+
+  <!-- 3. Adsterra PopUnder (opens ONCE per day behind tab - not disturbing) -->
+  <!-- Replace POPUNDER_ZONE_ID with your Adsterra PopUnder zone ID -->
+  <script>
+    (function(d,z,s){
+      s.src='https://'+d+'/popunder/'+z;
+      try{(document.body||document.documentElement).appendChild(s)}catch(e){}
+    })('cdn.adsterra.com','POPUNDER_ZONE_ID',document.createElement('script'));
+  </script>
 </head>
 <body>
 
@@ -634,6 +725,26 @@
     <div class="logo-badge">🎓 AKTU University</div>
     <h1>Result Checker</h1>
     <p class="subtitle">Check your semester results instantly — no date of birth required</p>
+  </div>
+
+  <!-- AdBlock Warning -->
+  <div class="adblock-warning" id="adblockWarning">
+    <div class="adblock-icon">🛡️</div>
+    <div class="adblock-title">Ad Blocker Detected!</div>
+    <div class="adblock-msg">
+      This website is <strong>100% free</strong> for AKTU students.<br>
+      We show only <strong>clean, non-intrusive ads</strong> to keep it running.<br>
+      Please disable your AdBlocker to support us! 🙏
+    </div>
+    <div class="adblock-steps">
+      <strong>How to disable AdGuard/AdBlock:</strong>
+      <ul>
+        <li>1️⃣ Click the AdGuard/AdBlock icon in your browser</li>
+        <li>2️⃣ Click <strong>"Pause on this site"</strong> or <strong>"Disable"</strong></li>
+        <li>3️⃣ Refresh the page</li>
+      </ul>
+    </div>
+    <button class="btn-adblock" onclick="checkAdBlock()">✅ I've disabled it — Refresh</button>
   </div>
 
   <!-- Info Strip -->
@@ -654,6 +765,13 @@
       <div class="info-chip-icon">✅</div>
       <div class="info-chip-label">Official Data</div>
     </div>
+  </div>
+
+  <!-- AD 1: Top Banner (shows above search - not disturbing) -->
+  <div class="ad-container" id="topAd">
+    <div class="ad-label">— Advertisement —</div>
+    <!-- Replace BANNER_ZONE_1 with Adsterra Banner Zone ID -->
+    <script async="async" data-cfasync="false" src="//pl.adsterra.com/BANNER_ZONE_1/invoke.js"></script>
   </div>
 
   <!-- Search Card -->
@@ -679,6 +797,13 @@
         <option value="8">8th Semester</option>
       </select>
       <span class="select-arrow">▾</span>
+    </div>
+
+    <!-- AD 2: Middle Banner (shows after semester select, before captcha) -->
+    <div class="ad-container" id="middleAd">
+      <div class="ad-label">— Advertisement —</div>
+      <!-- Replace BANNER_ZONE_3 with Adsterra Banner Zone ID -->
+      <script async="async" data-cfasync="false" src="//pl.adsterra.com/BANNER_ZONE_3/invoke.js"></script>
     </div>
 
     <!-- CAPTCHA Section -->
@@ -723,6 +848,13 @@
       </div>
     </div>
 
+    <!-- AD 3: Result Ad (shows after result loads - user already got what they wanted!) -->
+    <div class="ad-container" id="resultAd">
+      <div class="ad-label">— Advertisement —</div>
+      <!-- Replace BANNER_ZONE_4 with Adsterra Banner Zone ID -->
+      <script async="async" data-cfasync="false" src="//pl.adsterra.com/BANNER_ZONE_4/invoke.js"></script>
+    </div>
+
     <div class="subjects-card">
       <div class="subjects-title">📋 Subject-wise Marks</div>
       <table>
@@ -740,6 +872,13 @@
 
     <button class="btn btn-primary" onclick="resetSearch()">🔍 Search Another Result</button>
     <button class="btn btn-secondary" onclick="window.print()">🖨️ Print / Download</button>
+  </div>
+
+  <!-- AD 4: Bottom Banner (shows below everything - least disturbing) -->
+  <div class="ad-container" id="bottomAd">
+    <div class="ad-label">— Advertisement —</div>
+    <!-- Replace BANNER_ZONE_2 with Adsterra Banner Zone ID -->
+    <script async="async" data-cfasync="false" src="//pl.adsterra.com/BANNER_ZONE_2/invoke.js"></script>
   </div>
 
   <div class="footer">
@@ -943,5 +1082,39 @@
   }
 </script>
 
+<!-- Adsterra Social Bar - REAL CODE -->
+<script src="https://pl28958501.profitablecpmratenetwork.com/79/45/49/79454982ce710fab9525cad1f8c2d2fe.js"></script>
+
+<script>
+  // ── ADBLOCK DETECTOR ──────────────────────────────────
+  function detectAdBlock() {
+    // Create a fake ad element
+    const testAd = document.createElement('div');
+    testAd.innerHTML = '&nbsp;';
+    testAd.className = 'adsbox pub_300x250 pub_300x250m pub_728x90 text-ad textAd text_ad text_ads text-ads text-ad-links';
+    testAd.style.cssText = 'width: 1px !important; height: 1px !important; position: absolute !important; left: -10000px !important; top: -1000px !important;';
+    document.body.appendChild(testAd);
+
+    setTimeout(() => {
+      if (testAd.offsetHeight === 0 || testAd.offsetParent === null || 
+          window.getComputedStyle(testAd).display === 'none') {
+        // AdBlock detected!
+        document.getElementById('adblockWarning').classList.add('visible');
+        document.getElementById('topAd').style.display = 'none';
+        document.getElementById('bottomAd').style.display = 'none';
+      } else {
+        // No AdBlock — ads will load automatically via PropellerAds scripts
+      }
+      document.body.removeChild(testAd);
+    }, 100);
+  }
+
+  function checkAdBlock() {
+    window.location.reload();
+  }
+
+  // Run detector after page loads
+  window.addEventListener('load', detectAdBlock);
+</script>
 </body>
 </html>
