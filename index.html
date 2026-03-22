@@ -575,6 +575,7 @@
       .grade-badges { gap: 8px; }
     }
   </style>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 
@@ -635,9 +636,12 @@
     <!-- CAPTCHA Section -->
     <div class="captcha-section" id="captchaSection">
       <div class="captcha-box">
-        <div class="captcha-title">🛡️ Quick Verification — Select all matching images</div>
-        <p class="captcha-question" id="captchaQuestion">Select all images that contain: <strong>Traffic Lights</strong></p>
-        <div class="captcha-images" id="captchaGrid"></div>
+        <div class="captcha-title">🛡️ Quick Verification — Prove you are human</div>
+        <div class="g-recaptcha" 
+          data-sitekey="6Lf9NJMsAAAAAKMwI9R5RsRehXIgSzx4mM-WDTln"
+          data-theme="dark"
+          style="margin-top:10px;">
+        </div>
       </div>
     </div>
 
@@ -774,14 +778,14 @@
       document.getElementById('rollInput').disabled = true;
       document.getElementById('semSelect').disabled = true;
     } else if (step === 'captcha') {
-      if (selectedCaptcha.size === 0) return showError('Please solve the CAPTCHA first.');
-      if (!verifyCaptcha()) return showError('Incorrect CAPTCHA selection. Please try again.');
-      fetchResult();
+      const token = grecaptcha.getResponse();
+      if (!token) return showError('Please complete the CAPTCHA verification first.');
+      fetchResult(token);
     }
   }
 
   // ─── FETCH RESULT ─────────────────────────────────────────
-  async function fetchResult() {
+  async function fetchResult(captchaToken) {
     const roll = document.getElementById('rollInput').value.trim();
     const sem = document.getElementById('semSelect').value;
 
@@ -807,7 +811,7 @@
     // In production, replace this URL with your actual backend API
     // e.g. https://aktu-backend-7hn5.onrender.com/api/result
     try {
-      const res = await fetch(`https://aktu-backend-7hn5.onrender.com/api/result?roll=${roll}&sem=${sem}`);
+      const res = await fetch(`https://aktu-backend-7hn5.onrender.com/api/result?roll=${roll}&sem=${sem}&captcha=${captchaToken}`);
       clearInterval(interval);
       document.getElementById('loadingSection').classList.remove('visible');
 
