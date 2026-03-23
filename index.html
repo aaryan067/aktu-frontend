@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <!-- SEO Title -->
-  <title>AKTU Result 2024-25 | Check Without DOB | AKTU Semester Result</title>
+  <title>AKTU Result 2025 | Check Without DOB Instantly | aktuoneview.ac.in Result</title>
 
   <!-- SEO Description -->
-  <meta name="description" content="Check AKTU Result 2024-25 without Date of Birth. Get AKTU semester result, SGPA, CGPA and subject wise marks instantly. Faster than aktuoneview.ac.in">
+  <meta name="description" content="Check AKTU Result 2025 without DOB instantly! Get AKTU semester result, SGPA, CGPA and subject wise marks in seconds. Works even when aktuoneview.ac.in is down! Faster & easier than official site.">
 
   <!-- SEO Keywords -->
-  <meta name="keywords" content="AKTU result, AKTU result without DOB, aktuoneview.ac.in result, AKTU semester result 2024, AKTU result 2025, UPTU result, AKTU marks, AKTU SGPA CGPA, check AKTU result, AKTU result by roll number">
+  <meta name="keywords" content="AKTU result, AKTU result without DOB, aktuoneview.ac.in result, AKTU semester result 2024-25, AKTU result 2025, UPTU result, AKTU marks, AKTU SGPA CGPA, check AKTU result, AKTU result by roll number, aktu result kaise dekhe, aktu result bina dob ke, aktu 1st semester result, aktu 2nd semester result, aktu 3rd semester result, aktu 4th semester result, aktu 5th semester result, aktu 6th semester result, aktu 7th semester result, aktu 8th semester result, aktu btech result, aktu mba result, aktu mca result, dr apj abdul kalam technical university result, uptu result without dob, aktu result fast, aktu marks checker">
 
   <!-- Author -->
   <meta name="author" content="AKTU Result Checker">
@@ -76,6 +76,311 @@
       font-family: 'DM Sans', sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
+    }
+
+    /* ── OFFICIAL AKTU RESULT STYLES ── */
+    .official-header {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      color: #1a1a1a;
+    }
+
+    .aktu-logo {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+    }
+
+    .official-title { flex: 1; }
+
+    .official-title-hi {
+      font-size: 13px;
+      color: #cc0000;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .official-title-en {
+      font-size: 14px;
+      color: #003399;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .official-title-sub {
+      font-size: 11px;
+      color: #555;
+      margin-bottom: 4px;
+    }
+
+    .official-oneview {
+      font-size: 14px;
+      color: #003399;
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .result-heading {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-left: 4px solid #003399;
+      padding: 10px 16px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 12px;
+      border-radius: 4px;
+    }
+
+    .official-table-wrap {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      overflow-x: auto;
+    }
+
+    .official-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      color: #1a1a1a;
+    }
+
+    .official-table tr {
+      border-bottom: 1px solid #eee;
+    }
+
+    .official-table tr:last-child { border-bottom: none; }
+
+    .official-label {
+      padding: 10px 12px;
+      font-weight: 600;
+      color: #333;
+      background: #f9f9f9;
+      white-space: nowrap;
+      width: 160px;
+    }
+
+    .official-colon {
+      padding: 10px 4px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .official-value {
+      padding: 10px 12px;
+      color: #003399;
+      font-weight: 500;
+    }
+
+    .session-card {
+      background: #fff0f0;
+      border: 1px solid #ffcccc;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #1a1a1a;
+      line-height: 1.8;
+    }
+
+    .session-card strong { color: #003399; }
+
+    .session-pass { background: #f0fff0; border-color: #ccffcc; }
+    .session-fail { background: #fff0f0; border-color: #ffcccc; }
+
+    @media print {
+      .ad-container, .btn, .header, .info-strip,
+      .adblock-warning, #searchCard { display: none !important; }
+      .official-header { border: none; }
+    }
+
+    /* ── DISCLAIMER POPUP ── */
+    .disclaimer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    .disclaimer-box {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 420px;
+      width: 100%;
+      color: #1a1a1a;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .disclaimer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .disclaimer-title {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #1a1a1a;
+    }
+
+    .disclaimer-close {
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+    }
+
+    .disclaimer-body {
+      background: #f5f5f5;
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #333;
+      margin-bottom: 16px;
+    }
+
+    .disclaimer-body p { margin-bottom: 12px; }
+    .disclaimer-body p:last-child { margin-bottom: 0; }
+
+    .disclaimer-note {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .btn-understand {
+      width: 100%;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .btn-understand:hover { background: #333; }
+
+    /* ── UNLOCK PAGE AD WALL ── */
+    .unlock-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 9998;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(6px);
+    }
+
+    .unlock-overlay.visible { display: flex; }
+
+    .unlock-box {
+      background: #fff5f5;
+      border-radius: 16px;
+      padding: 32px 24px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .unlock-icon { font-size: 48px; margin-bottom: 12px; }
+
+    .unlock-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+
+    .unlock-msg {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .unlock-btn {
+      width: 100%;
+      background: #fff;
+      border: 2px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+    }
+
+    .unlock-btn:hover {
+      border-color: #ff4444;
+      background: #fff5f5;
+    }
+
+    .unlock-btn-text { text-align: left; }
+    .unlock-btn-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: #1a1a1a;
+    }
+    .unlock-btn-sub {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .unlock-btn-icon {
+      width: 36px;
+      height: 36px;
+      background: #ff4444;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
     }
 
     /* ── AD STYLES ── */
@@ -718,6 +1023,41 @@
 </head>
 <body>
 
+<!-- DISCLAIMER POPUP -->
+<div class="disclaimer-overlay" id="disclaimerOverlay">
+  <div class="disclaimer-box">
+    <div class="disclaimer-header">
+      <div class="disclaimer-title">⚠️ Important Disclaimer</div>
+      <button class="disclaimer-close" onclick="closeDisclaimer()">✕</button>
+    </div>
+    <div class="disclaimer-body">
+      <p>This project is built to help users <strong>quickly view examination results</strong> for convenience and educational purposes only.</p>
+      <p>If you choose to view <strong>someone else's result</strong>, you do so entirely at <strong>your own responsibility</strong>. The developer is <span style="color:red;font-weight:700">not responsible</span> for any misuse, privacy violations, or consequences.</p>
+      <p>This platform is <strong>not intended</strong> to violate privacy, impersonate individuals, or bypass official systems. Users are expected to act ethically and responsibly.</p>
+    </div>
+    <div class="disclaimer-note">
+      🛡️ This is an <strong>unofficial, student-made</strong> project and is <strong>not affiliated</strong> with AKTU or any governing authority.
+    </div>
+    <button class="btn-understand" onclick="closeDisclaimer()">I Understand</button>
+  </div>
+</div>
+
+<!-- UNLOCK PAGE AD WALL -->
+<div class="unlock-overlay" id="unlockOverlay">
+  <div class="unlock-box">
+    <div class="unlock-icon">🎓</div>
+    <div class="unlock-title">Unlock this Page!</div>
+    <div class="unlock-msg">Your single click makes this content available now.</div>
+    <button class="unlock-btn" onclick="unlockPage()">
+      <div class="unlock-btn-text">
+        <div class="unlock-btn-title">Unlock Now (View Ad)</div>
+        <div class="unlock-btn-sub">View Ad & Get Full Access</div>
+      </div>
+      <div class="unlock-btn-icon">▶</div>
+    </button>
+  </div>
+</div>
+
 <div class="container">
 
   <!-- Header -->
@@ -782,22 +1122,7 @@
       <input type="text" id="rollInput" placeholder="e.g. 2100140520001" maxlength="13"/>
     </div>
 
-    <label class="input-label">Select Semester</label>
-    <div class="select-wrapper">
-      <span class="input-icon">📚</span>
-      <select id="semSelect">
-        <option value="">-- Choose Semester --</option>
-        <option value="1">1st Semester</option>
-        <option value="2">2nd Semester</option>
-        <option value="3">3rd Semester</option>
-        <option value="4">4th Semester</option>
-        <option value="5">5th Semester</option>
-        <option value="6">6th Semester</option>
-        <option value="7">7th Semester</option>
-        <option value="8">8th Semester</option>
-      </select>
-      <span class="select-arrow">▾</span>
-    </div>
+    <!-- No semester needed - shows all semesters automatically -->
 
     <!-- AD 2: Middle Banner (shows after semester select, before captcha) -->
     <div class="ad-container" id="middleAd">
@@ -831,43 +1156,82 @@
     <div class="loading-text" id="loadingText">Connecting to AKTU servers...</div>
   </div>
 
-  <!-- Result Section -->
+  <!-- Result Section - Official AKTU Style -->
   <div class="result-section" id="resultSection">
 
-    <div class="result-header">
-      <div class="student-name" id="resName">—</div>
-      <div class="student-info" id="resInfo">—</div>
-      <div class="grade-badges">
-        <div class="badge badge-sgpa" id="resSGPA">SGPA: —</div>
-        <div class="badge badge-cgpa" id="resCGPA">CGPA: —</div>
-        <div class="badge" id="resStatus">—</div>
+    <!-- Official Header like AKTU site -->
+    <div class="official-header">
+      <img src="https://aktu.ac.in/images/logo.png" onerror="this.style.display='none'" class="aktu-logo" alt="AKTU"/>
+      <div class="official-title">
+        <div class="official-title-hi">डा0 ए0पी0जे0 अब्दुल कलाम प्राविधिक विश्वविद्यालय, उत्तर प्रदेश, लखनऊ</div>
+        <div class="official-title-en">Dr. A.P.J. Abdul Kalam Technical University, Uttar Pradesh, Lucknow</div>
+        <div class="official-title-sub">( Formerly Uttar Pradesh Technical University )</div>
+        <div class="official-oneview">AKTU-One-View</div>
       </div>
     </div>
 
-    <!-- AD 3: Result Ad (shows after result loads - user already got what they wanted!) -->
-    <div class="ad-container" id="resultAd">
-      <div class="ad-label">— Advertisement —</div>
-      <!-- Replace BANNER_ZONE_4 with Adsterra Banner Zone ID -->
-      <script async="async" data-cfasync="false" src="//pl.adsterra.com/BANNER_ZONE_4/invoke.js"></script>
-    </div>
+    <!-- Student Result heading -->
+    <div class="result-heading">Student Result</div>
 
-    <div class="subjects-card">
-      <div class="subjects-title">📋 Subject-wise Marks</div>
-      <table>
-        <thead>
-          <tr>
-            <th>Subject</th>
-            <th>Code</th>
-            <th>Marks</th>
-            <th>Grade</th>
-          </tr>
-        </thead>
-        <tbody id="subjectTable"></tbody>
+    <!-- Student Info Table - exactly like official site -->
+    <div class="official-table-wrap">
+      <table class="official-table">
+        <tr>
+          <td class="official-label">Institute Code &amp; Name</td>
+          <td class="official-colon">:</td>
+          <td class="official-value" id="resCollege">—</td>
+        </tr>
+        <tr>
+          <td class="official-label">Course Code &amp; Name</td>
+          <td class="official-colon">:</td>
+          <td class="official-value" id="resCourse">—</td>
+          <td class="official-label">Branch Code &amp; Name</td>
+          <td class="official-colon">:</td>
+          <td class="official-value" id="resBranch">—</td>
+        </tr>
+        <tr>
+          <td class="official-label">RollNo</td>
+          <td class="official-colon">:</td>
+          <td class="official-value" id="resRollNo">—</td>
+          <td class="official-label">EnrollmentNo</td>
+          <td class="official-colon">:</td>
+          <td class="official-value" id="resEnroll">—</td>
+        </tr>
+        <tr>
+          <td class="official-label">Name</td>
+          <td class="official-colon">:</td>
+          <td class="official-value" id="resName">—</td>
+          <td class="official-label">Hindi Name</td>
+          <td class="official-colon">:</td>
+          <td class="official-value" id="resHindiName">—</td>
+        </tr>
+        <tr>
+          <td class="official-label">Father's Name</td>
+          <td class="official-colon">:</td>
+          <td class="official-value" id="resFather">—</td>
+          <td class="official-label">Gender</td>
+          <td class="official-colon">:</td>
+          <td class="official-value" id="resGender">—</td>
+        </tr>
       </table>
     </div>
 
-    <button class="btn btn-primary" onclick="resetSearch()">🔍 Search Another Result</button>
-    <button class="btn btn-secondary" onclick="window.print()">🖨️ Print / Download</button>
+    <!-- AD 3: Result Ad -->
+    <div class="ad-container" id="resultAd">
+      <div class="ad-label">— Advertisement —</div>
+      <script async="async" data-cfasync="false" src="//pl.adsterra.com/BANNER_ZONE_4/invoke.js"></script>
+    </div>
+
+    <!-- One View Result heading -->
+    <div class="result-heading">One View Result</div>
+
+    <!-- Session wise results -->
+    <div id="sessionResults"></div>
+
+    <div style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="resetSearch()">🔍 Search Another Result</button>
+      <button class="btn btn-secondary" onclick="window.print()">🖨️ Print / Download</button>
+    </div>
   </div>
 
   <!-- AD 4: Bottom Banner (shows below everything - least disturbing) -->
@@ -952,9 +1316,7 @@
     try { loadPopunder(); } catch(e) {}
     if (step === 'roll') {
       const roll = document.getElementById('rollInput').value.trim();
-      const sem = document.getElementById('semSelect').value;
       if (!roll || roll.length < 10) return showError('Please enter a valid roll number (min 10 digits).');
-      if (!sem) return showError('Please select a semester.');
       // Show CAPTCHA
       step = 'captcha';
       document.getElementById('captchaSection').classList.add('visible');
@@ -969,7 +1331,6 @@
       }
       document.getElementById('mainBtn').textContent = '✅ Verify & Get Result';
       document.getElementById('rollInput').disabled = true;
-      document.getElementById('semSelect').disabled = true;
     } else if (step === 'captcha') {
       let token = '';
       try {
@@ -1005,7 +1366,7 @@
 
     // ── BACKEND CALL ──
     try {
-      const res = await fetch(`https://aktu-backend-7hn5.onrender.com/api/result?roll=${roll}&sem=${sem}&captcha=${captchaToken}`);
+      const res = await fetch(`https://aktu-backend-7hn5.onrender.com/api/result?roll=${roll}&captcha=${captchaToken}`);
       clearInterval(interval);
       document.getElementById('loadingSection').classList.remove('visible');
       document.getElementById('searchCard').style.display = 'block';
@@ -1082,8 +1443,6 @@
     selectedCaptcha = new Set();
     document.getElementById('rollInput').value = '';
     document.getElementById('rollInput').disabled = false;
-    document.getElementById('semSelect').value = '';
-    document.getElementById('semSelect').disabled = false;
     document.getElementById('captchaSection').classList.remove('visible');
     document.getElementById('mainBtn').textContent = 'Continue →';
     document.getElementById('resultSection').classList.remove('visible');
@@ -1105,6 +1464,31 @@
 <script src="https://pl28958501.profitablecpmratenetwork.com/79/45/49/79454982ce710fab9525cad1f8c2d2fe.js"></script>
 
 <script>
+  // ── DISCLAIMER ──────────────────────────────────────────
+  function closeDisclaimer() {
+    document.getElementById('disclaimerOverlay').style.display = 'none';
+    // Show unlock page after disclaimer
+    setTimeout(() => {
+      document.getElementById('unlockOverlay').classList.add('visible');
+    }, 500);
+  }
+
+  // ── UNLOCK PAGE ──────────────────────────────────────────
+  function unlockPage() {
+    // Fire popunder ad when user clicks unlock
+    try { loadPopunder(); } catch(e) {}
+    document.getElementById('unlockOverlay').classList.remove('visible');
+  }
+
+  // Show disclaimer on first visit
+  window.addEventListener('load', () => {
+    // Check if already seen disclaimer
+    if (!sessionStorage.getItem('disclaimerSeen')) {
+      document.getElementById('disclaimerOverlay').style.display = 'flex';
+      sessionStorage.setItem('disclaimerSeen', 'true');
+    }
+  });
+
   // ── ADBLOCK DETECTOR ──────────────────────────────────
   function detectAdBlock() {
     // Create a fake ad element
