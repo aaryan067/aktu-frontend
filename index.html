@@ -1150,6 +1150,26 @@
     </button>
   </div>
 
+  <!-- Session Step Card -->
+  <div class="card" id="sessionCard" style="display:none;">
+    <div style="text-align:center; padding: 10px 0;">
+      <div style="font-size:40px; margin-bottom:12px;">🔓</div>
+      <div style="font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:#fff; margin-bottom:8px;">
+        One Quick Step!
+      </div>
+      <div style="color:var(--muted); font-size:14px; margin-bottom:24px; line-height:1.6;">
+        To view results without DOB, we need to create a session first.<br>
+        Click the button below — it will open AKTU site briefly.
+      </div>
+      <button class="btn btn-primary" onclick="createSession()" style="margin-bottom:12px;">
+        🚀 Create Session & Get Result
+      </button>
+      <div style="font-size:12px; color:var(--muted);">
+        This is a one-time step per browser session
+      </div>
+    </div>
+  </div>
+
   <!-- Loading -->
   <div class="loading" id="loadingSection">
     <div class="spinner"></div>
@@ -1310,35 +1330,92 @@
   }
 
   // ─── MAIN BUTTON HANDLER ──────────────────────────────────
+  // ── SESSION TRICK ────────────────────────────────────────
+  // Hardcoded roll number to create AKTU session
+  const SEED_ROLL = '1305650004';
+  const AKTU_URL = 'https://oneview.aktu.ac.in';
+  let sessionCreated = sessionStorage.getItem('aktuSession') === 'true';
+
   function handleMainBtn() {
     hideError();
-    // Fire popunder every time user clicks button
     try { loadPopunder(); } catch(e) {}
+
     if (step === 'roll') {
       const roll = document.getElementById('rollInput').value.trim();
       if (!roll || roll.length < 10) return showError('Please enter a valid roll number (min 10 digits).');
-      // Show CAPTCHA
-      step = 'captcha';
-      document.getElementById('captchaSection').classList.add('visible');
-      // Render Google reCAPTCHA
-      try {
-        grecaptcha.render('recaptchaContainer', {
-          'sitekey': '6Lf9NJMsAAAAAKMwI9R5RsRehXIgSzx4mM-WDTln',
-          'theme': 'dark'
-        });
-      } catch(e) {
-        // Already rendered
+
+      if (!sessionCreated) {
+        // Step 1: Create session first using seed roll number
+        step = 'session';
+        showSessionStep(roll);
+      } else {
+        // Session exists - go directly to AKTU with user's roll number
+        openAKTU(roll);
       }
-      document.getElementById('mainBtn').textContent = '✅ Verify & Get Result';
-      document.getElementById('rollInput').disabled = true;
-    } else if (step === 'captcha') {
-      let token = '';
-      try {
-        token = grecaptcha.getResponse();
-      } catch(e) {}
-      if (!token) return showError('⚠️ Please tick the "I am not a robot" checkbox first!');
-      fetchResult(token);
     }
+  }
+
+  function showSessionStep(userRoll) {
+    // Store user's roll number for later
+    sessionStorage.setItem('userRoll', userRoll);
+    sessionStorage.setItem('aktuSession', 'true');
+
+    // Open AKTU with seed roll number to create session
+    document.getElementById('searchCard').style.display = 'none';
+    document.getElementById('sessionCard').style.display = 'block';
+  }
+
+  function proceedToAKTU() {
+    const userRoll = document.getElementById('rollInput').value.trim() || 
+                     sessionStorage.getItem('userRoll');
+    sessionStorage.setItem('aktuSession', 'true');
+    sessionCreated = true;
+    
+    // Open AKTU directly with user's roll number
+    openAKTU(userRoll);
+  }
+
+  function openAKTU(roll) {
+    // Open AKTU oneview in same tab with the roll number
+    const url = `${AKTU_URL}/WebPages/OneView/Stu_OneViewReportYear.aspx?Enrollment=${roll}`;
+    window.open(url, '_blank');
+    
+    // Show instruction message
+    document.getElementById('searchCard').style.display = 'block';
+    showError('✅ Result opened in new tab! If DOB is asked, come back and click "Create Session" first.');
+  }
+
+  // ── CREATE SESSION ───────────────────────────────────────
+  function createSession() {
+    const userRoll = document.getElementById('rollInput').value.trim() || 
+                     sessionStorage.getItem('userRoll');
+    
+    try { loadPopunder(); } catch(e) {}
+
+    // Step 1: Open seed roll to create session
+    const seedUrl = `${AKTU_URL}/WebPages/OneView/Stu_OneViewReportYear.aspx?Enrollment=${SEED_ROLL}`;
+    window.open(seedUrl, '_blank');
+
+    // Show next instruction
+    document.getElementById('sessionCard').innerHTML = `
+      <div style="text-align:center; padding:10px 0;">
+        <div style="font-size:40px; margin-bottom:12px;">⏳</div>
+        <div style="font-family:'Syne',sans-serif; font-size:18px; font-weight:800; color:#fff; margin-bottom:12px;">
+          Almost Done!
+        </div>
+        <div style="color:var(--muted); font-size:14px; margin-bottom:24px; line-height:1.8;">
+          1️⃣ A new tab just opened — wait 2 seconds<br>
+          2️⃣ Come back to this tab<br>
+          3️⃣ Click the button below
+        </div>
+        <button class="btn btn-primary" onclick="proceedToAKTU()">
+          ✅ Done! Show My Result Now
+        </button>
+      </div>
+    `;
+
+    sessionStorage.setItem('aktuSession', 'true');
+    sessionCreated = true;
   }
 
   // ─── FETCH RESULT ─────────────────────────────────────────
